@@ -1,11 +1,9 @@
 package com.shouldice.recipe.domain;
 
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.math.BigDecimal;
 
+@Entity
 public class Ingedient {
 
     @Id
@@ -17,6 +15,9 @@ public class Ingedient {
 
     @ManyToOne
     private Recipe recipe;
+
+    @OneToOne(fetch = FetchType.EAGER)
+    private UnitOfMeasure unitOfMeasure;
 
     public Long getId() {
         return id;
@@ -48,5 +49,13 @@ public class Ingedient {
 
     public void setRecipe(Recipe recipe) {
         this.recipe = recipe;
+    }
+
+    public UnitOfMeasure getUnitOfMeasure() {
+        return unitOfMeasure;
+    }
+
+    public void setUnitOfMeasure(UnitOfMeasure unitOfMeasure) {
+        this.unitOfMeasure = unitOfMeasure;
     }
 }
