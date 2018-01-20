@@ -1,6 +1,7 @@
 package com.shouldice.recipe.domain;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -16,6 +17,8 @@ public class Recipe {
     private Integer servings;
     private String source;
     private String url;
+
+    @Lob
     private String directions;
 
     @Lob
@@ -28,12 +31,17 @@ public class Recipe {
     private Notes notes;
 
     @OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-    private Set<Ingedient> ingedients;
+    private Set<Ingredient> ingedients = new HashSet<>();
 
     @ManyToMany
     @JoinTable(name = "recipe_category",
             joinColumns = @JoinColumn(name = "recipe_id"), inverseJoinColumns = @JoinColumn(name = "category_id"))
-    private Set<Category> categories;
+    private Set<Category> categories = new HashSet<>();
+
+    public void addIngredient(Ingredient ingredient) {
+        this.getIngedients().add(ingredient);
+        ingredient.setRecipe(this);
+    }
 
     public Long getId() {
         return id;
@@ -123,11 +131,19 @@ public class Recipe {
         this.notes = notes;
     }
 
-    public Set<Ingedient> getIngedients() {
+    public Set<Ingredient> getIngedients() {
         return ingedients;
     }
 
-    public void setIngedients(Set<Ingedient> ingedients) {
+    public void setIngedients(Set<Ingredient> ingedients) {
         this.ingedients = ingedients;
+    }
+
+    public Set<Category> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(Set<Category> categories) {
+        this.categories = categories;
     }
 }
